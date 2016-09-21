@@ -1,0 +1,89 @@
+﻿@model FileUpload.Models.User
+@{
+    ViewBag.Title = "FileUpload";
+}
+
+<link href="~/Content/style.css" rel="stylesheet" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script>
+
+<h2>FileUpload</h2>
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { }))
+{
+    @Html.AntiForgeryToken()
+    <table>
+        <tr>
+            <td>userid</td>User id<td colspan="2"> @Html.EditorFor(m => m.userid)</td>
+        </tr>
+        <tr>
+            <td>useName</td> User Name<td colspan="2"> @Html.EditorFor(m => m.username)</td>
+        </tr>
+        <tr>
+            <td>Files</td>
+            <td ><input type="file" name="files"><input type="submit" id="upload" value="upload" name="Command" title="upload"></td>
+            <td></td>
+
+        </tr>
+        <tr><td></td>
+
+            <td><input type="submit" id="save" value="save" name="Command" title="save">
+            <input type="submit" id="cancel" value="cancel" name="Command" title="cancel"></td>
+
+        </tr>
+        <tr>
+            <td colspan="5">
+                <div class="progress progress-striped" style="width:500px">
+    <div class="progress-bar progress-bar-success">0%</div>
+</div>
+
+            </td>
+
+        </tr>
+    </table>
+    
+    
+    
+    
+}
+
+
+
+
+
+
+<script>
+    (function () {
+
+        var bar = $('.progress-bar');
+        var percent = $('.progress-bar');
+        var status = $('#status');
+
+        $('form').ajaxForm({
+            beforeSend: function () {
+                status.empty();
+                var percentVal = '0%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            success: function () {
+                var percentVal = '100%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            complete: function (xhr) {
+                status.html(xhr.responseText);
+                 status.empty();
+                var percentVal = '0%';
+                bar.width(percentVal)
+                percent.html(percentVal);
+            }
+        });
+
+    })();
+</script>
